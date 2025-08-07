@@ -2,7 +2,6 @@ import { useSelector } from "react-redux";
 import { useAppDispatch } from "../utilits.ts";
 import { likeArticle, unLikeArticle } from "../store/postSlice.ts";
 import { getDatePost } from "../utilits.ts";
-//import type {article} from "../store/postListSlice.tsx";
 import type {RootState} from "../store/store.tsx";
 import { HeartOutlined, HeartFilled } from '@ant-design/icons';
 import { Link } from "react-router-dom";
@@ -14,13 +13,6 @@ const DemoPost = ({ slug }: { slug: string }) => {
     const post = useSelector((state: RootState) =>
         state.posts.postsData.find((p) => p.slug === slug)
     );
-
-
-    const userStr = localStorage.getItem('user');
-    if (!userStr) return null;
-
-    const userParse = JSON.parse(userStr);
-    if (!userParse || !userParse.token) return null;
 
     if (!post) return null;
 
