@@ -1,0 +1,45 @@
+@use 'variables' as *;
+.register-window{
+  width: 344px;
+  height: 534px;
+  background-color: white;
+  margin-right: auto;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 20px;
+}
+.input-Sign-Up{
+  width: 100%;
+}
+.register-window label input {
+  height: 40px;
+  width: 100%;
+}
+.register-window label{
+  width: 100%;
+}
+label input.check{
+  width: 13px;
+  height: 13px;
+}
+.sign_in_link{
+  color: $titleColor;
+}
+.sign_in_link:hover{
+  color: $hoverButtonColor;
+}
+.editProfile-window{
+  width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 20px;
+}
+.editProfile-input{
+  width: 100%!important;
+}

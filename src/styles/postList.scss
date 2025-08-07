@@ -1,0 +1,21 @@
+@use 'variables' as *;
+
+.post_list{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  list-style-type: none;
+  padding: 0;
+  margin-top: 0;
+}
+.post_list__item{
+  width: 938px;
+  height: 140px;
+  margin-bottom: 26px;
+  background-color: $backgroundCardColor;
+  border-radius: 5px;
+}
+body{
+  background-color: $backgroundAppColor;
+  margin: 0;
+}
