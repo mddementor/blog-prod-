@@ -14,23 +14,28 @@
   font-size: 18px;
   margin-left: 22px;
 }
+.nav-bar{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
 .nav-auth{
   display: flex;
   flex-direction: row;
-
+  align-items: center;
 }
 
 .sign_in_link{
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   width: 109px;
-   height: 51px;
-   margin-right: 19px;
-   background-color: $backgroundCardColor;
-   border: 1px solid transparent;
-   padding: 0;
-   text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 109px;
+  height: 51px;
+  margin-right: 19px;
+  background-color: $backgroundCardColor;
+  border: 1px solid transparent;
+  padding: 0;
+  text-decoration: none;
 }
 .sign_up_link{
   display: flex;
