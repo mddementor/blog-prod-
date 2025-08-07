@@ -3,16 +3,18 @@ import { useSelector, useDispatch } from "react-redux";
 import type { RootState } from "../store/store.tsx";
 import { logout } from '../store/authSlice.tsx';
 import type { AppDispatch } from "../store/store.tsx";
-import {Button} from 'antd'
-import  defaultAvatar  from '../assets/avatar-default-symbolic-svgrepo-com (1).svg'
+import { Button } from 'antd'
+import defaultAvatar from '../assets/avatar-default-symbolic-svgrepo-com (1).svg'
 
 const Header: React.FC = () => {
     const auth = useSelector((state: RootState) => state.user);
-    const dispatch:AppDispatch = useDispatch();
+    const dispatch: AppDispatch = useDispatch();
     const isAuth = !!localStorage.getItem('token');
-    const user = JSON.parse(localStorage.getItem('user'))
+    const userJSON = localStorage.getItem('user');
+    const user = userJSON ? JSON.parse(userJSON) : null;
+
     return (
-        <header className='header' >
+        <header className='header'>
             <div className='header-item'>
                 Realworld Blog
             </div>
@@ -26,21 +28,21 @@ const Header: React.FC = () => {
                             SignUp
                         </Link>
                     </div>
-                :
+                    :
                     <div className='nav-bar'>
                         <Link to='/createArticle'
                               className='createArticle'
                         >
                             Create article
                         </Link>
-                        <label>
+                        <div className='user-info' style={{ display: 'flex', alignItems: 'center' }}>
                             <Link to='/editProfile'
                                   className='editProfile'
                             >
-                                {user.name}
+                                {user?.name}
                             </Link>
                             <img
-                                src={auth.user.image || defaultAvatar}
+                                src={`${auth.user?.image}  ${user?.image} || ${defaultAvatar}`}
                                 style={{
                                     width: '50px',
                                     height: '50px',
@@ -49,8 +51,9 @@ const Header: React.FC = () => {
                                     borderRadius: '50%',
                                     border: '0',
                                 }}
+                                alt="User profile avatar"
                             />
-                        </label>
+                        </div>
                         <Button onClick={() => {
                             dispatch(logout())
                         }}>

@@ -1,3 +1,4 @@
+
 import { Button, Form, Input } from 'antd';
 import {useState} from "react";
 import { validateTitle, validateDescription, validateText } from "../utilits.ts";
@@ -12,9 +13,11 @@ const UpdateArticle = () => {
     const [short, setShort] = useState('');
     const [text, setText] = useState('');
     const [tags, setTags] = useState<{ id: string; value: string }[]>([]);
+
     const addTag = () => {
         setTags([...tags, { id: uuidv4(), value: '' }]);
     };
+
     const dispatch = useDispatch<AppDispatch>()
 
     const removeTag = (id: string) => {
@@ -25,21 +28,25 @@ const UpdateArticle = () => {
         setTags(tags.map(tag => tag.id === id ? { ...tag, value: newValue } : tag));
     };
 
-    const token = localStorage.getItem('token');
     const navigate = useNavigate()
-    const { slug } = useParams();
+    const { slug } = useParams<{ slug: string }>();
 
     if (!slug) return <div>Article not found</div>;
 
-
     return(
         <div className='create-form'>
-            <h2 className='create-form--h2'>Create new article</h2>
+            <h2 className='create-form--h2'>Edit article</h2>
             <Form
                 layout='vertical'
                 onFinish={() => {
                     const cleanTags = tags.map(tag => tag.value.trim()).filter(tag => tag !== '');
                     const token = localStorage.getItem('token');
+
+                    if (!token) {
+                        console.error('No token found');
+                        return;
+                    }
+
                     dispatch(updateArticle({
                         article: {
                             title,
@@ -48,10 +55,11 @@ const UpdateArticle = () => {
                             tagList: cleanTags,
                             slug
                         },
-                        token: token!
-                    })).then(()=>{navigate('/')})
+                        token: token
+                    })).then(() => {
+                        navigate('/');
+                    });
                 }}
-
             >
                 <Form.Item
                     name='Title'
@@ -102,6 +110,8 @@ const UpdateArticle = () => {
                         { required: true },
                         {
                             validator: (_, value) =>
+
+
                                 validateText(value)
                                     ? Promise.resolve()
                                     : Promise.reject('This field must be filled in.')
@@ -118,7 +128,6 @@ const UpdateArticle = () => {
                     />
                 </Form.Item>
                 <div>
-
                     {tags.map((tag, index) => (
                         <div key={tag.id} style={{display: 'flex', gap: '10px', marginBottom: '8px'}}>
                             <Input
