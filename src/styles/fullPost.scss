@@ -1,7 +1,8 @@
 .fullPost{
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: flex-start;
   padding: 20px;
   width: 938px;
   height: 797px;
