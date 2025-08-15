@@ -25,7 +25,7 @@ const PostList = () => {
     const handleChange = (page: number) => {
         dispatch(setPage(page));
         dispatch(getPosts(page));
-        setSearchParams({ page: String(page) }); // обновляем URL
+        setSearchParams({ page: String(page) });
     };
 
     return (
