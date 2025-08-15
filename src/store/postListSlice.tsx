@@ -24,7 +24,6 @@ interface PostsState {
     error: string | null;
     page: number;
     total: number;
-    //currentPage: number;
 }
 
 const savedPage = Number(localStorage.getItem("currentPage")) || 1;
@@ -35,28 +34,21 @@ const initialState: PostsState = {
     error: '',
     page: savedPage,
     total: 0,
-    //currentPage: 1,
 }
 
 const getPosts = createAsyncThunk(
     'fetchPosts',
     async (page: number) => {
         const offset = (page - 1) * 5;
-        try {
-            const response = await fetch(`https://blog-platform.kata.academy/api/articles?limit=5&offset=${offset}`);
-            if(!response.ok){
-                throw new Error(`Ошибка при получении постов: ${response.status}`);
-            }
-            const postsAnd = await response.json();
-            const posts = postsAnd.articles;
-            console.log(page)
-            return {
-                postData: posts,
-                total: postsAnd.articlesCount,
-                page
-            }
-        } catch (e) {
-            console.log(e);
+        const response = await fetch(`https://blog-platform.kata.academy/api/articles?limit=5&offset=${offset}`);
+        if (!response.ok) {
+            throw new Error(`Ошибка при получении постов: ${response.status}`);
+        }
+        const postsAnd = await response.json();
+        return {
+            postData: postsAnd.articles,
+            total: postsAnd.articlesCount,
+            page
         }
     }
 );
@@ -67,9 +59,9 @@ const postsSlice = createSlice({
     reducers: {
         setPage: (state, action: PayloadAction<number>) => {
             state.page = action.payload;
+            localStorage.setItem("currentPage", String(action.payload));
         }
     },
-
     extraReducers: builder => {
         builder
             .addCase(getPosts.pending, (state) => {
@@ -81,7 +73,6 @@ const postsSlice = createSlice({
                     state.postsData = action.payload.postData;
                     state.total = action.payload.total;
                     state.page = action.payload.page;
-                    localStorage.setItem("currentPage", String(action.payload.page));
                 }
                 state.isLoading = false;
             })

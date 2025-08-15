@@ -17,7 +17,7 @@ const PostList = () => {
 
 
     useEffect(() => {
-        const pageFromUrl = Number(searchParams.get("page"));
+        const pageFromUrl = Number(searchParams.get("page")) || 1;
         dispatch(setPage(pageFromUrl));
         dispatch(getPosts(pageFromUrl));
     }, [dispatch]);
