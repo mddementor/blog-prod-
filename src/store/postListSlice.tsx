@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import {likeArticle, unLikeArticle} from "./postSlice.ts";
+import { likeArticle, unLikeArticle } from "./postSlice.ts";
 
 export interface article {
     slug: string;
@@ -24,35 +24,38 @@ interface PostsState {
     error: string | null;
     page: number;
     total: number;
+    //currentPage: number;
 }
+
+const savedPage = Number(localStorage.getItem("currentPage")) || 1;
 
 const initialState: PostsState = {
     postsData: [],
     isLoading: false,
     error: '',
-    page: 1,
+    page: savedPage,
     total: 0,
+    //currentPage: 1,
 }
 
 const getPosts = createAsyncThunk(
     'fetchPosts',
     async (page: number) => {
         const offset = (page - 1) * 5;
-        try{
+        try {
             const response = await fetch(`https://blog-platform.kata.academy/api/articles?limit=5&offset=${offset}`);
             if(!response.ok){
                 throw new Error(`Ошибка при получении постов: ${response.status}`);
             }
             const postsAnd = await response.json();
-            const posts = await postsAnd.articles
-
+            const posts = postsAnd.articles;
+            console.log(page)
             return {
                 postData: posts,
                 total: postsAnd.articlesCount,
                 page
             }
-        }
-        catch (e) {
+        } catch (e) {
             console.log(e);
         }
     }
@@ -62,10 +65,11 @@ const postsSlice = createSlice({
     name: 'posts',
     initialState,
     reducers: {
-        setPage: (state,action: PayloadAction<number>) => {
-            state.page = action.payload
+        setPage: (state, action: PayloadAction<number>) => {
+            state.page = action.payload;
         }
     },
+
     extraReducers: builder => {
         builder
             .addCase(getPosts.pending, (state) => {
@@ -77,10 +81,10 @@ const postsSlice = createSlice({
                     state.postsData = action.payload.postData;
                     state.total = action.payload.total;
                     state.page = action.payload.page;
+                    localStorage.setItem("currentPage", String(action.payload.page));
                 }
                 state.isLoading = false;
             })
-
             .addCase(getPosts.rejected, (state, action) => {
                 state.error = action.error.message || 'Unknown error';
                 state.isLoading = false;
@@ -107,11 +111,9 @@ const postsSlice = createSlice({
                     };
                 }
             });
-
     }
 });
 
-
 export { getPosts };
 export default postsSlice.reducer;
-export const { setPage } = postsSlice.actions
+export const { setPage } = postsSlice.actions;
